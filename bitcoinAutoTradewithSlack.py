@@ -1,3 +1,4 @@
+# 돌아가고 있는지 ps ax | grep .py
 import time
 import pyupbit
 import datetime
@@ -58,24 +59,24 @@ post_message(myToken,"#crypto", "autotrade start")
 while True:
     try:
         now = datetime.datetime.now()
-        start_time = get_start_time("KRW-SAND") # 9:00
+        start_time = get_start_time("KRW-BTC") # 9:00
         end_time = start_time + datetime.timedelta(days=1) # 9:00 + 1일
 
         # 9:00 
         if start_time < now < end_time - datetime.timedelta(seconds=10):
-            target_price = get_target_price("KRW-SAND", 0.7) # target_price(매수목표가)
-            ma15 = get_ma15("KRW-SAND")
-            current_price = get_current_price("KRW-SAND")
+            target_price = get_target_price("KRW-BTC", 0.7) # target_price(매수목표가)
+            ma15 = get_ma15("KRW-BTC")
+            current_price = get_current_price("KRW-BTC")
             if target_price < current_price and ma15 < current_price: # target보다 현재가가 높으면 매수
                 krw = get_balance("KRW")
                 if krw > 5000: # 잔고 5000원 이상일 때
-                    buy_result = upbit.buy_market_order("KRW-SAND", krw*0.9995)
-                    post_message(myToken,"#crypto", "SAND buy : " +str(buy_result))
+                    buy_result = upbit.buy_market_order("KRW-BTC", krw*0.9995)
+                    post_message(myToken,"#crypto", "BTC buy : " +str(buy_result))
         else:
-            sand = get_balance("SAND") 
-            if sand > 0.747: # 가지고 있는 sand가 5000원 이상이면 9시 10초전부터 전량 매도
-                sell_result = upbit.sell_market_order("KRW-SAND", sand*0.9995) # 비트코인 수수료 고려해서 99.95%만 매도
-                post_message(myToken,"#crypto", "SAND buy : " +str(sell_result))
+            btc = get_balance("BTC") 
+            if btc > 0.00013: # 가지고 있는 btc가 5000원 이상이면 9시 10초전부터 전량 매도
+                sell_result = upbit.sell_market_order("KRW-BTC", btc*0.9995) # 비트코인 수수료 고려해서 99.95%만 매도
+                post_message(myToken,"#crypto" , "BTC sell : " +str(sell_result))
         time.sleep(1)
     except Exception as e:
         print(e)
